@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Problem Solver</title>
+    <style>
+        /* Global Styles */
+/* Global Styles */
+body, html {
+font-family: 'Arial', sans-serif;
+background-color: transparent;
+color: #333;    
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+margin: 0;
+overflow-x: hidden;
+}
+
+/* Custom Cursor */
+.custom-cursor {
+position: fixed;
+width: 20px;
+height: 20px;
+background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+border-radius: 50%;
+box-shadow: 0 0 12px 4px rgba(255, 255, 255, 0.6);
+pointer-events: none;
+z-index: 1000;
+transform: translate(-50%, -50%);
+transition: transform 0.07s ease-out, width 0.2s, height 0.2s;
+}
+
+/* Hide cursor over form */
+.form-container:hover ~ .custom-cursor {
+display: none;
+}
+
+/* Main Container (For Two Boxes) */
+.container {
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+width: 80%;
+max-width: 1000px;
+gap: 20px;
+padding: 20px;
+background-color: transparent;
+}
+
+/* Box Styling */
+.half {
+flex: 1;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 20px;
+box-sizing: border-box;
+min-width: 48%;
+}
+
+/* Vertical Separator */
+.separator {
+width: 4px;
+height: 80%;
+background: linear-gradient(to bottom, #00ff00, #ffffff, #00ff00);
+box-shadow: 0 0 15px 4px #00ff00;
+position: relative;
+margin: 0 10px;
+}
+
+/* Background Video */
+#video-bg {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+z-index: -1;
+}
+
+/* Form Box */
+.form-container {
+background: rgba(255, 255, 255, 0.15);
+backdrop-filter: blur(20px);
+padding: 30px;
+border-radius: 12px;
+box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+width: 100%;
+max-width: 420px;
+text-align: left;
+transform: scale(1);
+animation: slideIn 0.8s ease-out, popIn 0.7s ease-out 0.5s forwards;
+transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+position: relative;
+z-index: 2;
+}
+
+/* Hover Effects */
+.form-container:hover {
+transform: scale(1.05);
+box-shadow: 0 0 25px white;
+animation: pulseGlow 1s infinite alternate;
+}
+
+/* Form Elements */
+label {
+font-size: 15px;
+font-weight: 500;
+display: block;
+margin-bottom: 8px;
+color: white;
+}
+
+input, textarea {
+width: 100%;
+padding: 12px;
+border: 1px solid rgba(255, 255, 255, 0.3);
+border-radius: 6px;
+margin-bottom: 15px;
+background: rgba(255, 255, 255, 0.2);
+font-size: 14px;
+color: white;
+outline: none;
+}
+
+/* Buttons */
+.button-container {
+display: flex;
+justify-content: space-between;
+gap: 10px;
+}
+
+button {
+background: black;
+color: white;
+padding: 12px;
+border: none;
+border-radius: 6px;
+width: 100%;
+font-size: 16px;
+font-weight: 600;
+transition: 0.3s ease-in-out;
+cursor: pointer;
+}
+
+button:hover {
+background: lightgreen;
+transform: scale(1.1);
+}
+
+/* Delete Button */
+.deleteQuestion {
+background: black;
+color: white;
+padding: 6px 12px;
+border: none;
+border-radius: 6px;
+font-size: 14px;
+font-weight: bold;
+margin-top: 5px;
+cursor: pointer;
+transition: 0.3s;
+}
+
+.deleteQuestion:hover {
+background: red;
+transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes popIn {
+to {
+opacity: 1;
+transform: scale(1);
+}
+}
+
+@keyframes slideIn {
+from {
+opacity: 0;
+transform: translateY(50px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes pulseGlow {
+0% {
+box-shadow: 0 0 10px white;
+}
+50% {
+box-shadow: 0 0 20px white;
+}
+100% {
+box-shadow: 0 0 10px white;
+}
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+.container {
+flex-direction: column;
+height: auto;
+}
+
+.half {
+width: 100%;
+}
+
+.separator {
+display: none;
+}
+}
+/* Animations */
+@keyframes slideInLeft {
+from {
+opacity: 0;
+transform: translateX(-50px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+@keyframes slideInRight {
+from {
+opacity: 0;
+transform: translateX(50px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+/* Apply animations to form containers */
+.form-container {
+background: whtie;
+backdrop-filter: blur(20px);
+padding: 30px;
+border-radius: 12px;
+box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+width: 100%;
+max-width: 420px;
+text-align: left;
+opacity: 0;
+transform: scale(0.9);
+animation: popIn 0.7s ease-out 0.5s forwards;
+cursor: default;
+transition: 0.3s ease-in-out;
+}
+
+/* Left form box animation */
+.half:first-child .form-container {
+animation: slideInLeft 1s ease-out forwards, popIn 0.7s ease-out forwards;
+}
+
+/* Right form box animation */
+.half:last-child .form-container {
+animation: slideInRight 1s ease-out forwards, popIn 0.7s ease-out forwards;
+}
+
+
+/* Global Styles */
+body, html {
+font-family: 'Arial', sans-serif;
+background-color: transparent;
+color: #fff;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+margin: 0;
+overflow-x: hidden;
+}
+
+/* Custom Cursor */
+.custom-cursor {
+position: fixed;
+width: 20px;
+height: 20px;
+background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+border-radius: 50%;
+box-shadow: 0 0 12px 4px rgba(255, 255, 255, 0.6);
+pointer-events: none;
+z-index: 1000;
+transform: translate(-50%, -50%);
+transition: transform 0.07s ease-out, width 0.2s, height 0.2s;
+}
+
+/* Custom Cursor - Expand on Click */
+body:active .custom-cursor {
+width: 35px;
+height: 35px;
+background: rgba(0, 255, 0, 0.8);
+box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+}
+
+/* Main Container */
+.container {
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+width: 80%;
+max-width: 1000px;
+gap: 20px;
+padding: 20px;
+}
+
+/* Vertical Separator */
+.separator {
+width: 4px;
+height: 80%;
+background: linear-gradient(to bottom, #00ff00, #ffffff, #00ff00);
+box-shadow: 0 0 15px 4px #00ff00;
+position: relative;
+margin: 0 10px;
+animation: pulseGlow 1.5s infinite alternate;
+}
+
+/* Form Box with Glassmorphism */
+.form-container {
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(15px);
+padding: 30px;
+border-radius: 12px;
+box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+width: 100%;
+max-width: 420px;
+text-align: left;
+transform: scale(1);
+animation: fadeIn 1s ease-in-out, popIn 0.8s ease-out 0.5s forwards;
+transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+/* Form Fields */
+input, textarea {
+width: 100%;
+padding: 12px;
+border: 1px solid rgba(255, 255, 255, 0.3);
+border-radius: 6px;
+margin-bottom: 15px;
+background: rgba(255, 255, 255, 0.2);
+font-size: 14px;
+color: white;
+outline: none;
+transition: 0.3s ease-in-out;
+}
+
+/* Focus Effect */
+input:focus, textarea:focus {
+border-color: lime;
+box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+}
+
+/* Button Styling */
+button {
+background: black;
+color: white;
+padding: 12px;
+border: none;
+border-radius: 6px;
+width: 100%;
+font-size: 16px;
+font-weight: 600;
+transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+cursor: pointer;
+}
+
+/* Button Hover & Click Effects */
+button:hover {
+background: lightgreen;
+transform: scale(1.1);
+box-shadow: 0 0 15px lightgreen;
+}
+
+button:active {
+transform: scale(0.9);
+}
+
+/* Delete Button */
+.deleteQuestion {
+background: black;
+color: white;
+padding: 6px 12px;
+border: none;
+border-radius: 6px;
+font-size: 14px;
+font-weight: bold;
+margin-top: 5px;
+cursor: pointer;
+transition: 0.3s;
+}
+
+/* Delete Button Hover */
+.deleteQuestion:hover {
+background: red;
+transform: scale(1.1);
+box-shadow: 0 0 10px red;
+}
+
+/* Animations */
+@keyframes popIn {
+0% { transform: scale(0.8); opacity: 0; }
+100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+@keyframes pulseGlow {
+0% { box-shadow: 0 0 10px #00ff00; }
+100% { box-shadow: 0 0 20px #00ff00; }
+}
+
+/* Loading Spinner */
+.loading-spinner {
+display: none;
+width: 30px;
+height: 30px;
+border: 5px solid rgba(255, 255, 255, 0.2);
+border-top-color: #fff;
+border-radius: 50%;
+animation: spin 1s linear infinite;
+position: absolute;
+right: 10px;
+top: 50%;
+transform: translateY(-50%);
+}
+
+/* Spinner Animation */
+@keyframes spin {
+from { transform: rotate(0deg); }
+to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+.container {
+flex-direction: column;
+}
+
+.separator {
+display: none;
+}
+}
+
+/* ============================================
+CSS for Coding Problem Solver – Professional Look
+============================================ */
+
+/* CSS Variables for Consistency */
+:root {
+--bg-color: transparent;
+--text-color: #e0e0e0;
+--accent-color: #00ff00;         /* Use as a highlight color */
+--form-bg: rgba(255, 255, 255, 0.1);
+--blur-amount: 15px;
+--border-color: rgba(255, 255, 255, 0.3);
+--input-bg: rgba(255, 255, 255, 0.2);
+--btn-bg: #000;
+--btn-hover-bg: #4caf50;
+--transition-speed: 0.3s;
+}
+
+/* Global Reset & Box Sizing */
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+/* Base Styles */
+body, html {
+font-family: Arial, sans-serif;
+background-color: var(--bg-color);
+color: var(--text-color);
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* Background Video */
+#video-bg {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+z-index: -1;
+}
+
+/* Custom Cursor */
+.custom-cursor {
+position: fixed;
+width: 20px;
+height: 20px;
+background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+border-radius: 50%;
+box-shadow: 0 0 12px 4px rgba(255,255,255,0.6);
+pointer-events: none;
+z-index: 1000;
+transform: translate(-50%, -50%);
+transition: transform 0.07s ease-out, width 0.2s, height 0.2s;
+}
+
+/* Expand Cursor on Click */
+body:active .custom-cursor {
+width: 35px;
+height: 35px;
+background: rgba(0,255,0,0.8);
+box-shadow: 0 0 20px rgba(0,255,0,0.7);
+}
+
+/* Main Container */
+.container {
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+width: 80%;
+max-width: 1000px;
+gap: 20px;
+padding: 20px;
+}
+
+/* Responsive: Stack Columns on Smaller Screens */
+@media (max-width: 900px) {
+.container {
+flex-direction: column;
+}
+.separator {
+display: none;
+}
+}
+
+/* Half Box Styling */
+.half {
+flex: 1;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 20px;
+min-width: 48%;
+}
+
+/* Vertical Separator with Pulsing Glow */
+.separator {
+width: 4px;
+height: 80%;
+background: linear-gradient(to bottom, var(--accent-color), #fff, var(--accent-color));
+box-shadow: 0 0 15px 4px var(--accent-color);
+margin: 0 10px;
+animation: pulseGlow 1.5s infinite alternate;
+}
+
+/* Form Container with Glassmorphism & Animations */
+.form-container {
+background: var(--form-bg);
+backdrop-filter: blur(var(--blur-amount));
+padding: 30px;
+border-radius: 12px;
+box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+width: 100%;
+max-width: 420px;
+text-align: left;
+position: relative;
+opacity: 0;
+transform: scale(0.9);
+animation: fadeIn 1s forwards, popIn 0.8s ease-out 0.5s forwards;
+transition: transform var(--transition-speed) ease-out, box-shadow var(--transition-speed) ease-out;
+}
+
+/* Hover Effect for Form Container */
+.form-container:hover {
+transform: scale(1.05);
+box-shadow: 0 0 25px #fff;
+animation: pulseGlow 1s infinite alternate;
+}
+
+/* Form Header */
+.form-container h1 {
+margin-bottom: 20px;
+color: var(--text-color);
+}
+
+/* Form Labels */
+label {
+font-size: 15px;
+font-weight: 500;
+margin-bottom: 8px;
+display: block;
+color: var(--text-color);
+}
+
+/* Form Inputs & Textareas */
+input, textarea {
+width: 100%;
+padding: 12px;
+margin-bottom: 15px;
+background: var(--input-bg);
+border: 1px solid var(--border-color);
+border-radius: 6px;
+font-size: 14px;
+color: var(--text-color);
+outline: none;
+transition: border-color var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
+}
+
+input:focus, textarea:focus {
+border-color: lime;
+box-shadow: 0 0 15px rgba(0,255,0,0.7);
+}
+
+/* Button Container */
+.button-container {
+display: flex;
+justify-content: space-between;
+gap: 10px;
+}
+
+/* Buttons */
+button {
+background: var(--btn-bg);
+color: var(--text-color);
+padding: 12px;
+border: none;
+border-radius: 6px;
+width: 100%;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+button:hover {
+background: var(--btn-hover-bg);
+transform: scale(1.1);
+box-shadow: 0 0 15px var(--btn-hover-bg);
+}
+
+button:active {
+transform: scale(0.9);
+}
+
+/* Delete Button Specifics */
+.deleteQuestion {
+background: var(--btn-bg);
+color: var(--text-color);
+padding: 6px 12px;
+border: none;
+border-radius: 6px;
+font-size: 14px;
+font-weight: bold;
+margin-top: 5px;
+cursor: pointer;
+transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.deleteQuestion:hover {
+background: red;
+transform: scale(1.1);
+box-shadow: 0 0 10px red;
+}
+
+/* ============================================
+Animations
+============================================ */
+@keyframes popIn {
+0% { transform: scale(0.8); opacity: 0; }
+100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+@keyframes pulseGlow {
+0% { box-shadow: 0 0 10px var(--accent-color); }
+100% { box-shadow: 0 0 20px var(--accent-color); }
+}
+
+
+
+    </style>
+</head>
+
+<body>
+    <video id="video-bg" autoplay loop muted>
+        <source src="/static/videos/vibhashsigma.mp4" type="video/mp4">
+    </video>
+
+    <div class="custom-cursor" id="customCursor"></div>
+
+    <div class="container">
+        <div class="half">
+            <div class="form-container">
+                <h1 color="">📝 Upload your pdf with question here</h1>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <label for="nameUpload">👤 Name:</label>
+                    <input type="text" id="nameUpload" name="name" required>
+
+                    <label for="regNoUpload">🆔 Register Number:</label>
+                    <input type="text" id="regNoUpload" name="regNo" required>
+
+                    <label for="fileUpload">📂 Upload PDF:</label>
+                    <input type="file" id="fileUpload" name="file" accept=".pdf" required>
+
+                    <button type="submit">Solve Now</button>
+                </form>
+                <div class="message-box" id="uploadMessage"></div>
+            </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="half">
+            <div class="form-container">
+                <h1>manually enter your question</h1>
+                <form id="questionForm">
+                    <label for="nameQuestion">👤 Name:</label>
+                    <input type="text" id="nameQuestion" name="name" required>
+
+                    <label for="regNoQuestion">🆔 Register Number:</label>
+                    <input type="text" id="regNoQuestion" name="regNo" required>
+
+                    <div id="questionsContainer">
+                        <div class="question-wrapper">
+                            <label for="question-1">❓ Enter your Question:</label>
+                            <textarea id="question-1" name="questions" rows="3" required></textarea>
+                            <button type="button" class="deleteQuestion">✖</button>
+                        </div>
+                    </div>
+                    
+
+                    <div class="button-container">
+                        <button type="button" id="addMoreButton">➕ question</button>
+                        <button type="submit">Solve Now</button>
+                    </div>
+                </form>
+                <div class="message-box" id="questionMessage"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+let questionCount = 1; // Start question numbering
+
+// Function to add a new question dynamically
+document.getElementById('addMoreButton').addEventListener('click', () => {
+questionCount++;
+
+const newQuestionDiv = document.createElement('div');
+newQuestionDiv.classList.add('question-wrapper');
+newQuestionDiv.innerHTML = `
+    <label for="question-${questionCount}">❓ Enter your Question ${questionCount}:</label>
+    <textarea id="question-${questionCount}" name="questions" rows="3" required></textarea>
+    <button type="button" class="deleteQuestion">✖</button>
+`;
+
+document.getElementById('questionsContainer').appendChild(newQuestionDiv);
+
+// Scroll to the bottom smoothly
+newQuestionDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+// Add event listener to delete button
+newQuestionDiv.querySelector('.deleteQuestion').addEventListener('click', () => {
+    if (document.querySelectorAll('.question-wrapper').length > 1) {
+        newQuestionDiv.remove();
+    } else {
+        alert("You must have at least one question!");
+    }
+});
+});
+
+// Ensure the first question cannot be deleted if it's the only one
+document.querySelector('.deleteQuestion').addEventListener('click', function () {
+if (document.querySelectorAll('.question-wrapper').length > 1) {
+    this.parentElement.remove();
+} else {
+    alert("You must have at least one question!");
+}
+});
+
+// Handle Manual Question Form Submission
+document.getElementById('questionForm').addEventListener('submit', async (e) => {
+e.preventDefault();
+
+const questions = [];
+document.querySelectorAll('[name="questions"]').forEach(input => {
+    if (input.value.trim()) questions.push(input.value.trim());
+});
+
+const payload = {
+    name: document.getElementById('nameQuestion').value.trim(),
+    regNo: document.getElementById('regNoQuestion').value.trim(),
+    questions
+};
+
+console.log("Sending request:", payload);
+
+try {
+    const response = await fetch('/manual_solve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Error solving questions.');
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Solved_Questions.docx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); // Cleanup
+    showMessage('questionMessage', 'Questions solved successfully!', 'green');
+} catch (error) {
+    console.error("Error solving questions:", error);
+    showMessage('questionMessage', error.message, 'red');
+}
+});
+
+// Handle PDF Upload Form Submission
+document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+e.preventDefault();
+
+let formData = new FormData(document.getElementById('uploadForm'));
+
+console.log("Uploading file...");
+
+try {
+    const response = await fetch('/upload_pdf', {
+        method: 'POST',
+        body: formData
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Error processing PDF.');
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Solved_Questions.docx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); // Cleanup
+    showMessage('uploadMessage', 'PDF processed successfully!', 'green');
+} catch (error) {
+    console.error("Error processing PDF:", error);
+    showMessage('uploadMessage', error.message, 'red');
+}
+});
+
+// Function to show messages
+function showMessage(elementId, message, color) {
+const messageBox = document.getElementById(elementId);
+messageBox.textContent = message;
+messageBox.style.display = 'block';
+messageBox.style.backgroundColor = color === 'green' ? 'rgba(0, 128, 0, 0.7)' : 'rgba(255, 0, 0, 0.7)';
+}
+
+// Custom Cursor Movement
+document.addEventListener("mousemove", (e) => {
+const cursor = document.getElementById("customCursor");
+if (cursor) {
+    cursor.style.left = `${e.clientX}px`;
+    cursor.style.top = `${e.clientY}px`;
+}
+});
+});
+
+
+
+
+    
+
+
+    </script>
+
+</body> 
+</html>
