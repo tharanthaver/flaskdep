@@ -24,7 +24,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(TEMP_FOLDER, exist_ok=True)
 
 # API Key (replace with actual key)
-API_KEY = os.getenv("API_KEY")
+API_KEY = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjeWNsb3BzZW9tZWdhQGdtYWlsLmNvbSIsImlhdCI6MTczNjkxODAxNH0.cnNwHiscD8N_yKFd2eP9gZll3IO3BF-RVPz2opCvJdM"
 BASE_URL = "https://api.hyperbolic.xyz/v1/chat/completions"
 
 # Logging configuration
